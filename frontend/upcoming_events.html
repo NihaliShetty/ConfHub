@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel = "stylesheet" type = "text/css" href = "css/upcoming.css" />
+    <link rel="stylesheet" href="css/style.css"/>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="css/owl.carousel.min.css"/>
+
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <style>
+      .nav-link {
+        cursor: pointer;
+      }
+      .organizer {
+        color: gray;
+      }
+      .category {
+        font-style: italic;
+      }
+
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 40%;
+        top: 10%;
+        width: 20%; /* Full width */
+        height: auto; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      }
+
+      /* Modal Content/Box */
+      .modal-content {
+        background-color: #fefefe;
+        margin: 1% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 99%; /* Could be more or less, depending on screen size */
+      }
+
+      /* The Close Button */
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
+    </style>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="js/topconf.js"></script>
+<script src="js/RSSfeed.js"></script>
+
+  
+  <script>
+    const SERVER_URL = "http://localhost:5000/";
+		const appToken = "51b-b2e3-4bb7-844e-733c6f8970f0cc6f8951-81cf-4fa";
+
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $(".dropdown-menu li").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+
+    
+
+    xhr = new XMLHttpRequest();
+        scrollamt = 10;
+        count = 0;
+
+        function getConf(){
+
+          if (localStorage.getItem("email")) {
+            document.getElementById("logOutBtn").innerHTML = "Log Out";
+            var confNearMeBtn = document.getElementById("confNearMeBtn");
+            var profileBtn = document.getElementById("profileBtn");
+            // confNearMeBtn.innerHTML = "Confs Near Me";
+            // confNearMeBtn.href = "/confs_near_me.html";
+            profileBtn.innerHTML = "Profile";
+            profileBtn.onclick = displayProfile;
+          }
+
+          axios.post(SERVER_URL + "confs", {
+            appToken: appToken
+          }).then(response => {
+            if (!response.data.success) {
+              alert("Failed to obtain list of conferences from server. " + response.data.reason);
+              return;
+            }
+            var container = document.getElementById("container1");
+            var x = 0;
+            for (var conf of response.data.conferences) {
+              var doc = document.createElement("div");
+              doc.className = "button button4";
+              // console.log(conf.id)
+              var confid = document.createElement("div");
+              confid.innerHTML = conf.id
+              confid.style.display = "none";
+              doc.appendChild(confid);
+
+              var link = document.createElement("a");
+              link.href = conf.link;
+              link.textContent = conf.name;
+              link.className = "linkconf"
+              doc.appendChild(link);
+              var date = document.createElement("div");
+              date.textContent = conf.date;
+              date.className = "date dateconf";
+              var location = document.createElement("div");
+              location.textContent = conf.location;
+              location.className = "location locationconf";
+              
+              var container3 = document.createElement("div");
+              // var organizer = document.createElement("div");
+              // organizer.className = "organizer";
+              // organizer.textContent = "Organized by " + conf.organizer;
+              var category = document.createElement("div");
+              category.className = "category categoryconf";
+              category.textContent = "Category: " + conf.category;
+              // container3.appendChild(organizer)
+              container3.appendChild(category)
+              doc.appendChild(date);
+              doc.appendChild(location);
+              doc.appendChild(container3)
+
+              var hiddendiv = document.createElement("div");
+              hiddendiv.innerHTML = conf;
+              hiddendiv.style.display="none";
+              doc.appendChild(hiddendiv);
+
+              container.appendChild(doc);
+              
+              if(x==0){
+                //somthing
+                var cardcard = document.getElementById("cardcard");
+                      // cardcard.innerHTML=;
+                var hiddiv1 = document.createElement("div");
+                hiddiv1.innerHTML = conf.name;
+                hiddiv1.style.display = "none";
+
+                var hiddiv2 = document.createElement("div");
+                hiddiv2.innerHTML = conf.location;
+                hiddiv2.style.display = "none";
+
+                var confInfo = document.createElement("div");
+                confInfo.style.padding = "15px";
+                var link1 = document.createElement("a");
+                link1.href = conf.website;
+                link1.textContent = "Link to Website";
+                link1.style.fontSize = "large";
+                
+                var div2 = document.createElement("div");
+                div2.innerHTML = "Organizer Email : "+conf.email;
+                var div6 = document.createElement("div");
+                div6.innerHTML = "Organized By : "+conf.organizer;
+                var div3 = document.createElement("div");
+                div3.innerHTML = "Deadline Date : "+conf.deadline;
+                var div4 = document.createElement("div");
+                div4.innerHTML = "Country : "+conf.country;
+                var div5 = document.createElement("div");
+                div5.style.paddingTop = "3%";
+                div5.innerHTML = conf.description;
+                
+                confInfo.appendChild(hiddiv1);
+                confInfo.appendChild(hiddiv2);
+
+                confInfo.appendChild(link1);
+                confInfo.appendChild(div2);
+                confInfo.appendChild(div3);
+                confInfo.appendChild(div4);
+                confInfo.appendChild(div6);
+                confInfo.appendChild(div5);
+
+                // var inputtag = document.createElement("input");
+                // inputtag.type = "text";
+                // inputtag.className = "form-control inputtag";
+                // inputtag.placeholder = "Add Email...";
+                // inputtag.style.width = "70%";
+                var alertButton = document.createElement("div");
+                alertButton.className = "alertButton";
+                alertButton.innerHTML="Alert for conf";
+                cardcard.appendChild(confInfo);
+                // cardcard.appendChild(inputtag);
+                cardcard.appendChild(alertButton);
+                alertButton.addEventListener('click', function() {
+                  var deadline = this.parentElement.childNodes[0].childNodes[4].innerHTML.split(":")[1].trim() ;
+                  // var email = this.parentElement.childNodes[1].value;
+                  var name = this.parentElement.childNodes[0].childNodes[0].innerHTML.trim();
+                  var location = this.parentElement.childNodes[0].childNodes[1].innerHTML;
+                  var email = localStorage.getItem("email");
+                  var token = localStorage.getItem("userToken");
+                  axios.post(SERVER_URL + "mail", {
+                    // appToken : appToken,
+                    userToken: token,
+                    email: email,
+                    deadline:deadline,
+                    confname:name,
+                    location:location
+                  }).then(response => {
+                    if (!response.data.already_subscribed) {
+                      // alert("Failed to send alert" + response.data.reason);
+                      alert("Subscribed");
+                      return;
+                    }
+                    alert("Already subscribed");
+                  }); // end of mail request.
+                       
+                  
+                }); // end of event listener alert button
+                x = x + 1;
+              }
+              doc.addEventListener("click",function() {
+                var cardcard = document.getElementById("cardcard");
+                cardcard.innerHTML = "";                
+                var confid = this.childNodes[0].innerHTML;
+                console.log(confid);
+                axios.post(SERVER_URL + "confs", {
+                  appToken: appToken
+                }).then(response => {
+                  if (!response.data.success) {
+                    alert("Failed to obtain list of conferences from server. " + response.data.reason);
+                    return;
+                  }
+                  for (var conf of response.data.conferences) {
+                    if(conf.id == confid) {
+                      console.log(conf)
+                      // var organizedBy = document.createElement("div");
+                      // organizedBy.innerHTML="Organized by : "+ conf.organizer;
+                      var cardcard = document.getElementById("cardcard");
+                      // cardcard.innerHTML=;
+                      var hiddiv1 = document.createElement("div");
+                      hiddiv1.innerHTML = conf.name;
+                      hiddiv1.style.display = "none";
+
+                      var hiddiv2 = document.createElement("div");
+                      hiddiv2.innerHTML = conf.location;
+                      hiddiv2.style.display = "none";
+
+                      var confInfo = document.createElement("div");
+                      confInfo.style.padding = "15px";
+                      var link1 = document.createElement("a");
+                      link1.href = conf.website;
+                      link1.textContent = "Link to Website";
+                      link1.style.fontSize = "large";
+                      
+                      var div2 = document.createElement("div");
+                      div2.innerHTML = "Organizer Email : "+conf.email;
+                      var div6 = document.createElement("div");
+                      div6.innerHTML = "Organized By : "+conf.organizer;
+                      var div3 = document.createElement("div");
+                      div3.innerHTML = "Deadline Date : "+conf.deadline;
+                      var div4 = document.createElement("div");
+                      div4.innerHTML = "Country : "+conf.country;
+                      var div5 = document.createElement("div");
+                      div5.style.paddingTop = "3%";
+                      div5.innerHTML = conf.description;
+                      
+                      confInfo.appendChild(hiddiv1);
+                      confInfo.appendChild(hiddiv2);
+
+                      confInfo.appendChild(link1);
+                      confInfo.appendChild(div2);
+                      confInfo.appendChild(div3);
+                      confInfo.appendChild(div4)
+                      confInfo.appendChild(div6);
+                      confInfo.appendChild(div5);
+
+                      // var inputtag = document.createElement("input");
+                      // inputtag.type = "text";
+                      // inputtag.className = "form-control inputtag";
+                      // inputtag.placeholder = "Add Email...";
+                      // inputtag.style.width = "70%";
+                      var alertButton = document.createElement("div");
+                      alertButton.className = "alertButton";
+                      alertButton.innerHTML="Alert for conf";
+                      cardcard.appendChild(confInfo);
+                      // cardcard.appendChild(inputtag);
+                      cardcard.appendChild(alertButton);
+                      alertButton.addEventListener('click', function() {
+                        var deadline = this.parentElement.childNodes[0].childNodes[4].innerHTML.split(":")[1].trim() ;
+                        var email = this.parentElement.childNodes[1].value;
+                        var name = this.parentElement.childNodes[0].childNodes[0].innerHTML.trim();
+                        var location = this.parentElement.childNodes[0].childNodes[1].innerHTML;
+                        var email = localStorage.getItem("email");
+                        var token = localStorage.getItem("userToken");
+                        // var email = 
+                        axios.post(SERVER_URL + "mail", {
+                          // appToken : appToken,
+                          userToken: token,
+                          email: email,
+                          deadline:deadline,
+                          confname:name,
+                          location:location
+                        }).then(response => {
+                          if (!response.data.already_subscribed) {
+                            // alert("Failed to send alert" + response.data.reason);
+                            alert("Subscribed");
+                            return;
+                          }
+                          alert("Already subscribed");
+                        }); // end of mail request.
+                       
+                      }); // end of event listener alert button
+                      break;
+                    }
+                  }
+                }); // confid request
+                
+                
+            });//end of doc event listener
+            } // end of for loop for list of conferences.
+          });
+
+                     
+        }
+
+    function logOut() {
+      var email = localStorage.getItem("email");
+      var token = localStorage.getItem("userToken");
+      if (!email) {
+        window.location.href = "/index.html?open=logIn";
+      }
+      axios.post(SERVER_URL + "logout", {
+        appToken: appToken, email: email, userToken: token
+      })
+      .then(response => {
+        localStorage.setItem("email", "");
+        localStorage.setItem("userToken", "");
+        setTimeout(applyLogOut, 1000);
+      });
+    }
+
+    function applyLogOut() {
+      window.location.href = "/index.html";
+    }
+
+    function populateList(confs) {
+            var container = document.getElementById("container1");
+            container.innerHTML="";
+            var x = 0;
+            for (var conf of confs) {
+              var doc = document.createElement("div");
+              doc.className = "button button4";
+              // console.log(conf.id)
+              var confid = document.createElement("div");
+              confid.innerHTML = conf.id
+              confid.style.display = "none";
+              doc.appendChild(confid);
+
+              var link = document.createElement("a");
+              link.href = conf.link;
+              link.textContent = conf.name;
+              link.className = "linkconf"
+              doc.appendChild(link);
+              var date = document.createElement("div");
+              date.textContent = conf.date;
+              date.className = "date dateconf";
+              var location = document.createElement("div");
+              location.textContent = conf.location;
+              location.className = "location locationconf";
+              
+              var container3 = document.createElement("div");
+              // var organizer = document.createElement("div");
+              // organizer.className = "organizer";
+              // organizer.textContent = "Organized by " + conf.organizer;
+              var category = document.createElement("div");
+              category.className = "category categoryconf";
+              category.textContent = "Category: " + conf.category;
+              // container3.appendChild(organizer)
+              container3.appendChild(category)
+              doc.appendChild(date);
+              doc.appendChild(location);
+              doc.appendChild(container3)
+
+              var hiddendiv = document.createElement("div");
+              hiddendiv.innerHTML = conf;
+              hiddendiv.style.display="none";
+              doc.appendChild(hiddendiv);
+
+              container.appendChild(doc);
+              
+              if(x==0){
+                //somthing
+                var cardcard = document.getElementById("cardcard");
+                      cardcard.innerHTML="";
+                var hiddiv1 = document.createElement("div");
+                hiddiv1.innerHTML = conf.name;
+                hiddiv1.style.display = "none";
+
+                var hiddiv2 = document.createElement("div");
+                hiddiv2.innerHTML = conf.location;
+                hiddiv2.style.display = "none";
+
+                var confInfo = document.createElement("div");
+                confInfo.style.padding = "15px";
+                var link1 = document.createElement("a");
+                link1.href = conf.website;
+                link1.textContent = "Link to Website";
+                link1.style.fontSize = "large";
+                
+                var div2 = document.createElement("div");
+                div2.innerHTML = "Organizer Email : "+conf.email;
+                var div6 = document.createElement("div");
+                div6.innerHTML = "Organized By : "+conf.organizer;
+                var div3 = document.createElement("div");
+                div3.innerHTML = "Deadline Date : "+conf.deadline;
+                var div4 = document.createElement("div");
+                div4.innerHTML = "Country : "+conf.country;
+                var div5 = document.createElement("div");
+                div5.style.paddingTop = "3%";
+                div5.innerHTML = conf.description;
+                
+                confInfo.appendChild(hiddiv1);
+                confInfo.appendChild(hiddiv2);
+
+                confInfo.appendChild(link1);
+                confInfo.appendChild(div2);
+                confInfo.appendChild(div3);
+                confInfo.appendChild(div4)
+                confInfo.appendChild(div6);
+                confInfo.appendChild(div5);
+
+                // var inputtag = document.createElement("input");
+                // inputtag.type = "text";
+                // inputtag.className = "form-control inputtag";
+                // inputtag.placeholder = "Add Email...";
+                // inputtag.style.width = "70%";
+                var alertButton = document.createElement("div");
+                alertButton.className = "alertButton";
+                alertButton.innerHTML="Alert for conf";
+                cardcard.appendChild(confInfo);
+                // cardcard.appendChild(inputtag);
+                cardcard.appendChild(alertButton);
+                alertButton.addEventListener('click', function() {
+                  var deadline = this.parentElement.childNodes[0].childNodes[4].innerHTML.split(":")[1].trim() ;
+                  // var email = this.parentElement.childNodes[1].value;
+                  var name = this.parentElement.childNodes[0].childNodes[0].innerHTML.trim();
+                  var location = this.parentElement.childNodes[0].childNodes[1].innerHTML;
+                  var email = localStorage.getItem("email");
+                  var token = localStorage.getItem("userToken");
+                  axios.post(SERVER_URL + "mail", {
+                    // appToken : appToken,
+                    userToken: token,
+                    email: email,
+                    deadline:deadline,
+                    confname:name,
+                    location:location
+                  }).then(response => {
+                    if (!response.data.already_subscribed) {
+                      // alert("Failed to send alert" + response.data.reason);
+                      alert("Subscribed");
+                      return;
+                    }
+                    alert("Already subscribed");
+                  }); // end of mail request.
+                       
+                  
+                }); // end of event listener alert button
+                x = x + 1;
+              }
+              doc.addEventListener("click",function() {
+                var cardcard = document.getElementById("cardcard");
+                cardcard.innerHTML = "";                
+                var confid = this.childNodes[0].innerHTML;
+                console.log(confid);
+                axios.post(SERVER_URL + "confs", {
+                  appToken: appToken
+                }).then(response => {
+                  if (!response.data.success) {
+                    alert("Failed to obtain list of conferences from server. " + response.data.reason);
+                    return;
+                  }
+                  for (var conf of response.data.conferences) {
+                    if(conf.id == confid) {
+                      console.log(conf)
+                      // var organizedBy = document.createElement("div");
+                      // organizedBy.innerHTML="Organized by : "+ conf.organizer;
+                      var cardcard = document.getElementById("cardcard");
+                      // cardcard.innerHTML=;
+                      var hiddiv1 = document.createElement("div");
+                      hiddiv1.innerHTML = conf.name;
+                      hiddiv1.style.display = "none";
+
+                      var hiddiv2 = document.createElement("div");
+                      hiddiv2.innerHTML = conf.location;
+                      hiddiv2.style.display = "none";
+
+                      var confInfo = document.createElement("div");
+                      confInfo.style.padding = "15px";
+                      var link1 = document.createElement("a");
+                      link1.href = conf.website;
+                      link1.textContent = "Link to Website";
+                      link1.style.fontSize = "large";
+                      
+                      var div2 = document.createElement("div");
+                      div2.innerHTML = "Organizer Email : "+conf.email;
+                      var div6 = document.createElement("div");
+                      div6.innerHTML = "Organized By : "+conf.organizer;
+                      var div3 = document.createElement("div");
+                      div3.innerHTML = "Deadline Date : "+conf.deadline;
+                      var div4 = document.createElement("div");
+                      div4.innerHTML = "Country : "+conf.country;
+                      var div5 = document.createElement("div");
+                      div5.style.paddingTop = "3%";
+                      div5.innerHTML = conf.description;
+                      
+                      confInfo.appendChild(hiddiv1);
+                      confInfo.appendChild(hiddiv2);
+
+                      confInfo.appendChild(link1);
+                      confInfo.appendChild(div2);
+                      confInfo.appendChild(div3);
+                      confInfo.appendChild(div4)
+                      confInfo.appendChild(div6);
+                      confInfo.appendChild(div5);
+
+                      // var inputtag = document.createElement("input");
+                      // inputtag.type = "text";
+                      // inputtag.className = "form-control inputtag";
+                      // inputtag.placeholder = "Add Email...";
+                      // inputtag.style.width = "70%";
+                      var alertButton = document.createElement("div");
+                      alertButton.className = "alertButton";
+                      alertButton.innerHTML="Alert for conf";
+                      cardcard.appendChild(confInfo);
+                      // cardcard.appendChild(inputtag);
+                      cardcard.appendChild(alertButton);
+                      alertButton.addEventListener('click', function() {
+                        var deadline = this.parentElement.childNodes[0].childNodes[4].innerHTML.split(":")[1].trim() ;
+                        var email = this.parentElement.childNodes[1].value;
+                        var name = this.parentElement.childNodes[0].childNodes[0].innerHTML.trim();
+                        var location = this.parentElement.childNodes[0].childNodes[1].innerHTML;
+                        var email = localStorage.getItem("email");
+                        var token = localStorage.getItem("userToken");
+                        // var email = 
+                        axios.post(SERVER_URL + "mail", {
+                          // appToken : appToken,
+                          userToken: token,
+                          email: email,
+                          deadline:deadline,
+                          confname:name,
+                          location:location
+                        }).then(response => {
+                          if (!response.data.already_subscribed) {
+                            // alert("Failed to send alert" + response.data.reason);
+                            alert("Subscribed");
+                            return;
+                          }
+                          alert("Already subscribed");
+                        }); // end of mail request.
+                       
+                      }); // end of event listener alert button
+                      break;
+                    }
+                  }
+                }); // confid request
+                
+                
+            });//end of doc event listener
+            } // end of for loop for list of conferences.
+          };
+            // container.innerHTML = "";
+            // for (var conf of confs) {
+            //   var doc = document.createElement("div");
+            //   doc.className = "button button4";
+            //   var link = document.createElement("a");
+            //   link.href = conf.link;
+            //   link.textContent = conf.name;
+            //   doc.appendChild(link);
+            //   var date = document.createElement("div");
+            //   date.textContent = conf.date;
+            //   date.className = "date";
+            //   var location = document.createElement("div");
+            //   location.textContent = conf.location;
+            //   location.className = "location";
+
+            //   // var organizer = document.createElement("div");
+            //   // organizer.className = "organizer";
+            //   // organizer.textContent = "Organized by " + conf.organizer;
+            //   var category = document.createElement("div");
+            //   category.className = "category";
+            //   category.textContent = "Category: " + conf.category;
+            //   doc.appendChild(date);
+            //   doc.appendChild(location);
+            //   doc.appendChild(organizer);
+            //   doc.appendChild(category);
+
+            //   container.appendChild(doc);
+           
+
+          //   }
+          // }
+
+    function getQueryResults() {
+      var inputDate = document.getElementById("date").value;
+      var inputCategory = document.getElementById("inputCategory").value;
+      var inputLocation = document.getElementById("searcha").value;
+      var suffix;
+      var value;
+      let filters = {};
+      if (inputDate) {
+        filters.date = inputDate;
+      }
+      if (inputCategory) {
+        filters.category = inputCategory;
+      }
+      if (inputLocation) {
+        filters.location = inputLocation;
+      }
+        axios.post(SERVER_URL + "confs-by-multiple-filters", {
+          filters: filters
+        }).then(response => {
+          if (!response.data.success) {
+            alert("Query failed. " + response.data.reason);
+            return;
+          }
+          populateList(response.data.conferences);
+
+        });
+      
+
+    }
+
+    function getDetails(event)
+    {
+      console.log(event);
+      let filters = {};
+      filters.category = event.innerHTML;
+        axios.post(SERVER_URL + "confs-by-multiple-filters", {
+          filters: filters
+        }).then(response => {
+          if (!response.data.success) {
+            alert("Query failed. " + response.data.reason);
+            return;
+          }
+          populateList(response.data.conferences);
+
+        });
+    }
+    function clicklevel(el) {
+      console.log(el)
+      var ds = document.getElementById("displaySelected");
+      ds.innerHTML = el.innerHTML;
+    }
+    function resetbut() {
+      var ds = document.getElementById("displaySelected");
+      ds.innerHTML = "All conferences";
+      window.location = "upcoming_events.html";
+    }
+
+
+    </script>
+</head>
+<body onload="getConf();" style="background-image: url('img/bg2.png');"> 
+  <!-- style="background-image: url('img/bg2.png');" -->
+              <header class="header-section">
+                <nav class="navbar navbar-expand-md navbar-dark bg-dark site-navbar">
+                  <a class="navbar-brand site-logo" href="index.html#">
+                    <h2><span>Conf</span>Hub</h2>
+                    <p>connecting conferences</p>
+                  </a>
+                  <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="collapsibleNavId">
+                    <!-- Main menu -->
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                      <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                      </li>
+                      <li class="nav-item">
+                        <a id="TrainProgBtn" class="nav-link" href="training_programs.html">University</a>
+                      </li>
+                      <li class="nav-item">
+                        <a id="TopConfBtn" class="nav-link" onclick="getTopConf();">Top Conferences</a>
+                      </li>
+                      <li class="nav-item">
+                        <a id="RSSBtn" class="nav-link" onclick="getRSSfeed();">RSS Feed</a>
+                      </li>
+                      <li class="nav-item">
+                        <a id="profileBtn" class="nav-link">About</a>
+                      </li>
+                      <li class="nav-item">
+                        <a id="confNearMeBtn" class="nav-link" href="contact.html">Contact</a>
+                      </li>
+                      <li class="nav-item">
+                        <a id="logOutBtn" class="nav-link" data-toggle="modal" data-target="#myModal" onclick="logOut()">Log in</a>
+                      </li>                                                                    
+                    </ul>
+                    <!-- <div class="social-links my-2 my-lg-0">
+                      <a href="#"><i class="fa fa-pinterest"></i></a>
+                      <a href="#"><i class="fa fa-facebook"></i></a>
+                      <a href="#"><i class="fa fa-twitter"></i></a>
+                    </div> -->
+                  </div>
+                </nav>
+              </header>
+        
+        
+        <div class="container2">
+          <div class="dropdown dropdown1">
+            <div class="w3-card w3-round w3-white" style="width:200px;">
+              <div class="w3-container w3-padding"  >
+                <input placeholder="Search by Date.." class="form-control" type="text" onfocus="(this.type='date')"  id="date">               </div>
+            </div>
+            <br>
+          </ul>
+          </div>
+
+
+
+          <div class="dropdown dropdown2">
+            <div class="w3-card w3-round w3-white" style="width:200px;">
+              <div class="w3-container w3-padding"  >
+                <input id="inputCategory" class =" form-control" placeholder="Search Category.." type="text" onkeypress="">
+              </div>
+            </div>
+            <br>
+            <div id="CategoryDiv" style="width:200px"></div>
+            </ul>
+          </div>
+
+
+          <div class="dropdown dropdown3">
+            <!-- <ul class="dropdown-menu"> -->
+              <div class="w3-card w3-round w3-white" style="width:200px;">
+                <div class="w3-container w3-padding"  >
+                    <input class =" form-control" placeholder="Search Location.." type="text" id="searcha" onkeypress="obj.getterm()">
+                </div>
+              </div>
+              <br>
+              <div id="LocationDiv" style="width:200px"></div>
+          </div>
+
+          <div class="dropdown dropdown3">
+              <!-- <ul class="dropdown-menu"> -->
+                <div class="w3-card w3-round w3-white">
+                  <div class="w3-container w3-padding"  >
+                    <button class="btn btn-success" onclick="getQueryResults()">Go</button>
+                  </div>
+                </div>
+                <br>
+              </div>
+
+        </div>
+        <div class=>
+          <div class="row">
+            <div class="col-sm-2">
+              
+              <div class="card white cardcard2" id="cardcard2">
+                  
+                      <div id="displaySelected" > All Conferences</div>
+                      <img  class="arrowimg" src="img/curved_arrow2.png">
+                      <button onclick="resetbut()" class="resetbutton btn btn-success">reset</button>
+                        <nav>
+                            <ul>
+                              <li><button onclick="clicklevel(this)" class="superclass" id="button">CS</button>
+                                <ul>
+                                  <li class="secondlevel"><button onclick="getDetails(this)" id="button2" >Artificial Intelligence</button>
+                                  </li>
+                                  <li class="secondlevel" ><button onclick="getDetails(this)" id="button2">Computing</button>
+                                  </li>
+                                </ul>
+                              </li>
+                              <li><button onclick="getDetails(this)" class = "superclass" id="button" >Environment</button>
+                                <ul>
+                                  <li class = "secondlevel" ><button onclick="getDetails(this)" id="button2">Renewable Energy</button></li>
+                                  <li class = "secondlevel" ><button onclick="getDetails(this)" id="button2">Space</button></li>
+                                </ul>
+                              </li>
+                              <li><button onclick="getDetails(this)" class = "superclass" id="button">Engineering</button>
+                                <ul>
+                                  <li class = "secondlevel" ><button onclick="getDetails(this)" id="button2">Biomedical Engineering</button></li>
+                                  <li class = "secondlevel" ><button onclick="getDetails(this)" id="button2">Systems Engineering</button></li>
+                                </ul>
+                              </li>
+                              <li><button onclick="getDetails(this)" class = "hasConf" id="button">Architecture</button>
+                                <ul>
+                                  <li class = "secondlevel" ><button onclick="getDetails(this)" id="button2">Architectural Engineering</button></li>
+                                  <li class = "secondlevel" ><button onclick="getDetails(this)" id="button2">Civil Engineering</button></li>
+                                </ul>
+                              </li>
+                            </ul>
+                          </nav>
+              </div>
+              <div class = "cardcard2ad">
+              <!-- <img src="img/bg3.jpg"> --><!--image tag -->
+              </div>
+            </div>
+            <div class="col-sm-7">
+              <div class="container1" id="container1" >
+
+              <!-- </br> -->
+              <!-- <div class = "button button4">okay okat conferneve  from okay okat land in the way int e life</div> -->
+              </div>
+              <p id="content"></p>
+            </div>
+            <div class="col-sm-3">
+              <div class="text-center">
+                  <div class="cardcard card white" id="cardcard">
+                      <!-- <button class="site-btn" style="background-color: black">Alert For This Event</button> -->
+                    <!-- <p>Upcoming Events:</p>
+                    <p><strong>Notifications</strong></p>
+                    <div class="upcoming events">Right now its empty..</div> -->
+                  </div>
+                  <div class="cardcardad">
+                    <!-- <img src="img/bg3.jpg"> -->
+
+                  </div>
+                  </div>
+                  
+
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="myModal" class="modal">
+
+            <!-- Modal content -->
+            <div class="modal-content">
+              <span class="close">&times;</span>
+              <p><br/>
+                Name: <span id="h4-username"></span>
+              </p>
+              <p>
+                City: <span id="uuCity"></span>
+              </p>
+              <p>
+                DOB: <span id="uuDob"></span>
+              </p>
+              <p>
+                  Email: <span id="uuEmail"></span>
+                </p>
+            </div>
+          
+          </div>
+
+      <script>
+        function setupProfile() {
+          h4Username = document.getElementById("h4-username");
+          userCity = document.getElementById("uuCity");
+          userDob = document.getElementById("uuDob");
+          userEmail = document.getElementById("uuEmail");
+
+          var email = localStorage.getItem("email");
+          var token = localStorage.getItem("userToken");
+          userEmail.textContent = email;
+
+          axios.post(SERVER_URL + "user-details", {
+            email: email, userToken: token
+          }).then(res => {
+            if (res.data.success) {
+              h4Username.textContent = res.data.name;
+              userCity.textContent = res.data.city;
+              userDob.textContent = res.data.dob;
+            } else console.error(res.data);
+          }).catch (err => alert(err));
+
+        }
+        function displayProfile() {
+          var modal = document.getElementById("myModal");
+
+          // Get the button that opens the modal
+          var btn = document.getElementById("myBtn");
+
+          // Get the <span> element that closes the modal
+          var span = document.getElementsByClassName("close")[0];
+
+          span.onclick = function() {
+            modal.style.display = "none";
+          }
+
+          modal.style.display = "block";
+          setupProfile();
+        }
+      </script>
+    
+</body>
+</html>

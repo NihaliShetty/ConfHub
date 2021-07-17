@@ -1,0 +1,53 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  th, td {
+    text-align: left;
+    padding: 15px;
+  }
+  
+  tr:nth-child(even){background-color: #f2f2f2}
+  
+  th {
+    background-color: #23272a;
+    color: white;
+  }
+
+.containerclass{
+    margin-top: 5%;
+}
+
+.trainingprograms{
+    margin-bottom: 3%;
+
+    /* font-family: Verdana,sans-serif; */
+    font-family: Verdana, Geneva, Tahoma, sans-serif
+}
+
+/* .crop {
+    width: 200px;
+    height: 150px;
+    overflow: hidden;
+} */
+
+.crop img {
+    width: 100%;
+    height: 500px;
+    /* margin: -75px 0 0 -100px; */
+}
+
+
+.centered {
+    position: absolute; 
+    top: 70%;
+    left: 50%;
+    transform: translate(-70%, -50%);
+  }
+
+  .container4 {
+    position: relative;
+    text-align: center;
+    color: white;
+  }

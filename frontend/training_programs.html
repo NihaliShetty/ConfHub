@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel = "stylesheet" type = "text/css" href = "css/trainingprograms.css" />
+    <link rel="stylesheet" href="css/style.css"/>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="css/owl.carousel.min.css"/>
+
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css"> -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+    <style>
+      .nav-link {
+        cursor: pointer;
+      }
+      .organizer {
+        color: gray;
+      }
+      .category {
+        font-style: italic;
+      }
+    </style>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  
+  <script>
+    const SERVER_URL = "http://localhost:5000/";
+		const appToken = "51b-b2e3-4bb7-844e-733c6f8970f0cc6f8951-81cf-4fa";
+    
+		$(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $(".dropdown-menu li").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+
+    function getTable() {
+        axios.post(SERVER_URL + "list-training-programs", {
+            query: "list_universities" 
+          }).then(response => {
+            if (!response.data.success) {
+              alert("Failed to obtain list of conferences from server. " + response.data.reason);
+              return; 
+            }
+
+            var tableelement = document.getElementById("tableelement");
+            
+            for (var uni of response.data.universities) {
+                var tr1 = document.createElement("tr");
+                var td1 = document.createElement("td");
+                td1.innerHTML = uni;
+                tr1.appendChild(td1);
+                tableelement.appendChild(tr1);
+            }
+              
+          });
+    }
+
+    function populateList(university){
+    	var tableelement= document.getElementById("tableelement");
+      tableelement.innerHTML = "";
+      var tr2= document.createElement("th");
+      var td2= document.createElement("td");
+      td2.innerHTML="Universities";
+      tr2.appendChild(td2);
+      tableelement.appendChild(tr2);
+
+    	for( var uni of university){
+        var tr1= document.createElement("tr");
+        var th1= document.createElement("td");
+        th1.innerHTML= uni.university;
+        tr1.appendChild(th1)
+        tableelement.appendChild(tr1);
+
+      }
+      
+    }
+
+    function getQueryResults(){
+    	var Course= document.getElementById("course").value;
+  		suffix= "filter_courses";
+  		value= Course;
+      console.log(value);
+    	
+    	axios.post(SERVER_URL + "list-training-programs", {
+    		course: value, query: suffix 
+    	}).then(response=>{
+    		if(!response.data.success){
+    			alert("Query failed. " + response.data.reason);
+    			return;
+    		}
+        console.log(response.data.universities);
+    		populateList(response.data.universities);
+    	});
+    }
+
+    
+
+   
+
+    </script>
+</head>
+<body onload="getTable()">
+
+              <header class="header-section">
+                <nav class="navbar navbar-expand-md navbar-dark bg-dark site-navbar">
+                  <a class="navbar-brand site-logo" href="index.html#">
+                    <h2><span>Conf</span>Hub</h2>
+                    <p>connecting conferences</p>
+                  </a>
+                  <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="collapsibleNavId">
+                    <!-- Main menu -->
+                    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                      <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="training_programs.html">University</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" href="upcoming_events.html">Conferences</a>
+                      </li>
+                      <li class="nav-item">
+                        <a id="profileBtn" class="nav-link" href="about.html">About</a>
+                      </li>
+                      <li class="nav-item">
+                        <a id="confNearMeBtn" class="nav-link" href="contact.html">Contact</a>
+                      </li>
+                      <li class="nav-item">
+                        <a id="logOutBtn" class="nav-link" data-toggle="modal" data-target="#myModal" onclick="logOut()">Log in</a>
+                      </li>                                                                    
+                    </ul>
+                  </div>
+                </nav>
+              </header>
+        
+        
+        <div class="crop container4" style="width:100%;">
+            <img class="w3-image" src="img/student3.jpg" >
+            <div class="w3-display-middle w3-padding-large w3-border w3-wide w3-text-light-grey centered" style="margin-top: 5%;" >
+                <h1 class="w3-hide-medium w3-hide-small w3-xxxlarge" style="color:azure">UNIVERSITY</h1>
+                <!-- <h5 class="w3-hide-large" style="white-space:nowrap">JANE DOE</h5> -->
+                <h3 class="w3-hide-medium w3-hide-small" style="color: aliceblue">Courses</h3>
+            </div>
+            
+            <!-- Navbar (placed at the bottom of the header image) -->
+            
+        </div>
+        
+        <div class="containerclass">
+          <div class="row">
+            <div class="col-sm-2">
+              
+              <!-- <div class="card white cardcard2" id="cardcard2">
+              </div> -->
+              <!-- <img src="img/ad1.jpg"> -->
+                  
+            </div>
+
+            <div class="dropdown dropdown1" style="margin-right: 0%;margin-left:3%">
+              <div class="w3-card w3-round w3-white" style="width:225px;">
+                <div class="w3-container w3-padding">
+                    <input class =" form-control" placeholder="Search Course" type="text" id="course">
+                </div>
+              </div>
+              <br>
+          </div>
+            
+          
+          
+
+          <div class="dropdown dropdown3">
+              <!-- <ul class="dropdown-menu"> -->
+                <div class="w3-card w3-round w3-white" >
+                  <div class="w3-container w3-padding" >
+                    <button class="btn btn-success" onclick="getQueryResults()">Go</button>
+                  </div>
+                </div>
+                <br>
+              </div>
+
+		
+
+        <div id="container1" class="container1" style="margin-left: 3%">
+        <table id="tableelement" style="width: 200%;">
+        	<tr>
+            <th>University</th>
+        	</tr>
+        	<tr>
+
+        	</tr>
+        </table>
+    	</div>
+</body>
+</html>

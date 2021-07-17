@@ -1,0 +1,53 @@
+<html>
+<head>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<style>
+    body {
+        margin: 2%;
+    }
+    h2 {
+        text-align: center;
+    }
+    a {
+        font-size: large;
+        font-weight: 500;
+        margin-left: 10%;
+    }
+</style>
+</head>
+<body>
+    <a href="/">Back to ConfHub</a>
+    <h2>News Feed</h2>
+<div class="container">
+	<div class="row">
+	<ul id="entriesContainer" style="font-family: Sans-serif; font-size: 12pt; margin-top: 1%;">
+    </ul>
+
+	</div>
+</div>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  const SERVER_URL = "http://localhost:5000/";
+  let container = document.getElementById("entriesContainer");
+
+  function updateFeed() {
+    axios.post(SERVER_URL + "rss-feed", {}).then(res => {
+        if (res.data.success) {
+            container.innerHTML = "";
+            for (let content of res.data.entries) {
+                let entry = document.createElement("li");
+                entry.textContent = content;
+                container.appendChild(entry);
+            }
+        }
+    });
+  }
+  updateFeed();
+  setInterval(updateFeed, 60000);
+</script>
+</body>
+</html>

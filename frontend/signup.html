@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>SignUp</title>
+ 
+    
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+    <link href="css/jumbotron-narrow.css" rel="stylesheet">
+    <link href="css/signup.css" rel="stylesheet">
+    <!-- <link href="static/js/jquery-3.4.1.min.js"> -->
+
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="css/owl.carousel.min.css"/>
+    <!-- <link rel="stylesheet" href="css/style.css"/>  -->
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        const SERVER_URL = "http://localhost:5000/";
+        const appToken = "51b-b2e3-4bb7-844e-733c6f8970f0cc6f8951-81cf-4fa";
+    
+    function suggest() {
+        const myNode = document.getElementById("container");
+        myNode.innerHTML = ""
+        // while (myNode.firstChild) {
+        //     myNode.removeChild(myNode.firstChild);
+        // }
+        searchval = val("searcha")
+        axios.post(SERVER_URL + "interestssignup", {
+            appToken: appToken,
+            searchname: searchval
+        })
+        .then(response => {
+            console.log(response.data.conferences);
+            resO = response.data.conferences;
+            populateinterest(resO)
+        });
+
+    }
+    populateinterest = function (resO) {
+        // object.container.innerHTML = "";
+        var container = document.getElementById("container")
+        for (f in resO) {
+            var item = document.createElement("div");
+            item.innerHTML = resO[f];
+            item.className = "InterestItem border-bottom btn";
+            container.appendChild(item);
+            item.addEventListener("click",function(){
+                var d = document.getElementById("searcha");
+                d.value = "";
+
+                var dis = document.getElementById("InterestsDiv");
+                var newdiv = document.createElement("div");
+                newdiv.className="w3-tag w3-big w3-theme-l5";
+                newdiv.innerHTML = this.innerHTML;
+                var itag = document.createElement("i");
+                itag.className = "fa fa-times itag";
+                itag.onclick = function () {
+                    this.parentElement.remove(this);
+                };
+                newdiv.appendChild(itag);
+                dis.appendChild(newdiv);
+                // object.dis.appendChild(p);
+            });
+
+        }
+    }
+    var el = function(id) {
+        return document.getElementById(id);
+    }
+    var val = function(id) {
+        var element = document.getElementById(id);
+        if (!element) {
+            console.log("Element ID: " + id);
+            return;
+        }
+        return element.value;
+    }
+
+    function signUp() {
+        let email = val("inputUserName");
+        console.log("Email (sign up): " + email);
+        axios.post(SERVER_URL + "signup", {
+            appToken: appToken,
+            name: val("inputName"),
+            email: val("inputUserName"),
+            phoneNumber: val("inputPhoneNumber"),
+            password: val("inputPassword"),
+            dob: val("inputDate"),
+            city: val("inputCity")
+        })
+        .then(response => {
+            if (!response.data.success) {
+                alert("Sign up failed");
+                console.log("Reason for failure: " + response.data.reason);
+                return;
+            }
+            console.log(response.data);
+            localStorage.setItem("email", email);
+            localStorage.setItem("userToken", response.data.token);
+            setTimeout(changePage, 1000);
+        });
+    }
+
+    function changePage() {
+        window.location.href = "/upcoming_events.html";
+    }
+
+    </script>
+  </head>
+  <body >
+
+        
+
+        <div class="container">
+                <div class="header">
+                    
+                    <h3 class="text-muted" id="changed_org">ConfHub</h3>
+                </div>
+          
+                <div class="jumbotron">
+                    <h1>Sign Up</h1>
+                    <!-- <form class="form-signin" onsubmit="signUp()"> -->
+                    <div class="form-signin">
+                      <!-- <label for="inputid" class="sr-only">Userid</label>
+                      <input type="name" name="inputid" id="inputid" class="form-control" placeholder="User-id" required autofocus> -->
+                      <label for="inputName" class="sr-only">Name</label>
+                      <input type="name" name="inputName" id="inputName" class="form-control" placeholder="Name" required autofocus>
+                      <label for="inputUserName" class="sr-only">UserEmail</label>
+                      <input type="username" name="inputUserName" id="inputUserName" class="form-control" placeholder="User Email" required autofocus>
+                      <label for="inputPhoneNumber" class="sr-only">PhoneNumber</label>
+                      <input type="tel" name="inputPhoneNumber" id="inputPhoneNumber" class="form-control" placeholder="Phone Number" required autofocus>
+                      <label for="inputPassword" class="sr-only">Password</label>
+                      <input type="password" name="inputPassword" id="inputPassword" class="form-control" placeholder="Password" required autofocus>
+                      <label for="inputDate" class="sr-only">DOB</label>
+                      <input placeholder="DOB" class="form-control" type="text" onfocus="(this.type='date')" name="inputDate" id="inputDate" required autofocus> 
+                      <label for="inputCity" class="sr-only">City</label>
+                      <input type="name" name="inputCity" id="inputCity" class="form-control" placeholder="Location City" required autofocus>
+                    
+                    
+                              <div class="w3-card w3-round w3-white">
+                                <div class="w3-container w3-padding">
+                                    <input class =" form-control" placeholder="Add Interest.." type="text" id="searcha" onkeypress="suggest()">
+
+                                  <table border="0" cellpadding="0">
+                                          <tr>
+                                              <td>
+                                                  <div id="container" class="border"></div>
+                                              </td>
+                                          </tr>
+                                  </table>
+                                </div>
+                              </div>
+                              <br>
+                              <div id="InterestsDiv" class="form-control"></div>
+                              
+                         
+                      <button id="btnSignUp" class="btn btn-lg btn-primary btn-block" type="submit" onclick="signUp()">Sign up</button>
+                    </div>
+                  </div>
+          
+                <footer class="footer">
+                    <p>&copy; Changed.org 2019</p>
+                </footer>
+          
+            </div>
+ 
+   
+  </body>
+
+
+</html>

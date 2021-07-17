@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<title>Profile Page</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/font-awesome.min.css"/>
+	<link rel="stylesheet" href="css/owl.carousel.min.css"/>
+	<link rel="stylesheet" href="css/style.css"/>
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-blue-grey.css">
+<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
+<style>
+html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
+</style>
+<body class="w3-theme-l5">
+
+    <header class="header-section">
+		<nav class="navbar navbar-expand-md navbar-dark bg-dark site-navbar">
+			<a class="navbar-brand site-logo" href="index.html#">
+				<h2><span>Conf</span>Hub</h2>
+				<p>connecting the</p>
+			</a>
+			<button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+				aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="collapsibleNavId">
+				<!-- Main menu -->
+				<ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+					<li class="nav-item">
+						<a class="nav-link" href="index.html">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="about.html">About</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="contact.html">Contact</a>
+          </li>
+          <li class="nav-item">
+              <a class="nav-link" href="#">Logout</a>
+            </li>                                                                  
+				</ul>
+			</div>
+		</nav>
+	</header>
+
+
+<!-- Page Container -->
+<div class="container content" style="max-width:1500px;margin-top:80px">    
+  <!-- The Grid -->
+  <div class="row">
+    <!-- Left Column -->
+    <div class="col-sm-3">
+      <!-- Profile -->
+      <div class="card white" >
+        <!-- <div> -->
+        <div class="container">
+         <h4 class="text-center">My Profile</h4>
+         <p class="text-center"><img src="img/profile_pic.png" class="rounded-circle" style="height:106px;width:106px" alt="Avatar"></p>
+         <hr>
+         <i class="fa fa-pencil fa-fw margin-right text-theme"></i> 
+         <p id="h4-username"><i class="margin right"></i>Name </p>
+         <p id="userCity"><i class="fa fa-home fa-fw margin-right"></i> City, Country</p>
+         <p id="userDob"><i class="fa fa-birthday-cake fa-fw margin-right text-theme"></i> Month Date, Year</p>
+        </div>
+      </div>
+      <br>
+      
+      <!-- Accordion -->
+      <div class="card round">
+        <div class="white">
+          <button onclick="" class="w3-button w3-block w3-theme-l1 w3-left-align">Registered Conferences</button>
+      
+          <button onclick="" class="w3-button w3-block w3-theme-l1 w3-left-align">Attended Conferences</button>
+     
+          <button onclick="" class="w3-button w3-block w3-theme-l1 w3-left-align"> Training Programs</button>
+        </div>      
+      </div>
+      <br>
+      
+      <!-- Interests --> 
+      <div class="card round white hide-small">
+        <div class="container">
+          <p>Interests</p>
+          <p>
+            <span class="w3-tag w3-big w3-theme-d5">Machine Learning</span>
+            <span class="w3-tag w3-big w3-theme-d4">Cloud computing</span>
+            <span class="w3-tag w3-big w3-theme-l4">Big Data</span>
+          </p>
+        </div>
+      </div>
+      <br>
+    
+    <!-- End Left Column -->
+    </div>
+    
+    <!-- Middle Column -->
+    <!-- <div class="col-ld m7"> -->
+      <div class="col-sm-6">
+      <div class="container card white round margin"><br>
+        <h4>Registered Events</h4><br>
+        <hr class="w3-clear">
+          <div class="Registered conferences" >
+            <p>right now its empty..</p>
+          </div>
+      </div>
+      
+      <div class="container card white round my-3"><br>
+  
+        <h4>Already attended Conferences</h4><br>
+        <hr class="w3-clear">
+        <div class="Already attended Conferences" >
+          <p>right now its empty..</p>
+        </div>
+      </div>  
+
+      <div class="container card white round my-3"><br>
+  
+        <h4>Training Programs</h4><br>
+        <hr class="w3-clear">
+        <div class="Training programs" >
+          <p>right now its empty..</p>
+        </div>
+      </div>
+      
+    <!-- End Middle Column -->
+    </div>
+    
+    <!-- Right Column -->
+    <div class="col-sm-3">
+      <div class="card round white text-center">
+        <div class="container p-3">
+          <p>Upcoming Events:</p>
+          <p><strong>Notifications</strong></p>
+          <div class="upcoming events">Right now its empty..</div>
+        </div>
+      </div>
+      <br>
+      
+      <div class="card round white padding-32 text-center">
+          <div class="container p-3">
+              <p>Recommended Events:</p>
+              <p><strong>Recommendations</strong></p>
+              <div class="upcoming events">Right now its empty..</div>
+            </div>
+      </div>
+      
+    <!-- End Right Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+<!-- End Page Container -->
+</div>
+<br>
+
+ <footer class="w3-container w3-theme-d3 w3-padding-16">
+  <h5>Footer</h5>
+</footer>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+  const SERVER_URL = "http://localhost:5000/";
+
+  function setupPage() {
+    h4Username = document.getElementById("h4-username");
+    userCity = document.getElementById("userCity");
+    userDob = document.getElementById("userDob");
+
+    var email = localStorage.getItem("email");
+    var token = localStorage.getItem("userToken");
+
+    axios.post(SERVER_URL + "user-details", {
+      email: email, userToken: token
+    }).then(res => {
+      if (res.data.success) {
+        h4Username.textContent = res.data.name;
+        userCity.textContent = res.data.city;
+        userDob.textContent = res.data.dob;
+      } else console.error(res.data);
+    }).catch (err => alert(err));
+
+  }
+
+  setupPage();
+</script>
+
+</body>
+</html> 
