@@ -1,0 +1,27 @@
+{
+	"superclasses" : [
+		{
+			"categoryName" : "Computer Science",
+			"leaf" : 0,
+			"sub" : 1
+		},
+
+		{
+			"categoryName" : "Environment",
+			"leaf" : 0,
+			"sub" : 1
+		},
+
+		{
+			"categoryName" : "Engineering",
+			"leaf" : 1,
+			"sub" :1
+		},
+
+		{
+			"categoryName" : "Architecture",
+			"leaf" : 1,
+			"sub" :1
+		}
+	]
+}

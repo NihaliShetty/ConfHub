@@ -1,0 +1,88 @@
+{
+	"Computer Science" : [
+		{
+	      "categoryName": "Information Technology",
+	      "id": 2,
+	      "leaf": 1
+	    },
+	    {
+	      "categoryName": "Internet and World Wide Web",
+	      "id": 92,
+	      "leaf": 1
+	    },
+	    {
+	      "categoryName": "Artificial Intelligence",
+	      "id": 39,
+	      "leaf": 1
+	    },
+	    {
+	      "categoryName": "Computer software and applications",
+	      "id": 43,
+	      "leaf": 1
+	    },
+	    {
+	      "categoryName": "Computing",
+	      "id": 27,
+	      "leaf": 1
+	    },
+	    {
+	      "categoryName": "Image Processing",
+	      "id": 49,
+	      "leaf": 1
+	    },
+	    {
+	      "categoryName": "Data Mining",
+	      "id": 51,
+	      "leaf": 1
+	    },
+	    {
+	      "categoryName": "Data Collection",
+	      "id": 65,
+	      "leaf": 1
+	    }
+	],
+
+	"Environment" : [
+		{
+	      "categoryName": "Space Environment and Aviation Technology",
+	      "id": 158,
+	      "leaf": 1
+	    },
+	    {
+	      "categoryName": "Renewable Energy",
+	      "id": 73,
+	      "leaf": 1
+	    }
+	],
+
+	"Engineering" : [
+		{
+	      "categoryName": "Electronics and Electrical",
+	      "id": 24,
+	      "leaf": 1
+	    },
+	    {
+	      "categoryName": "Biomedical Engineering",
+	      "id": 82,
+	      "leaf": 1
+	    },
+	    {
+	      "categoryName": "Systems Engineering",
+	      "id": 76,
+	      "leaf": 1
+	    }
+	],
+	
+	"Architecture" : [
+		{
+	      "categoryName": "Architectural Engineering",
+	      "id": 170,
+	      "leaf": 1
+	    },
+	    {
+	      "categoryName": "Civil Engineering",
+	      "id": 169,
+	      "leaf": 1
+	    }
+	]
+}

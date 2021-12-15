@@ -1,0 +1,5 @@
+*.pyc
+db.sqlite3
+conf_queries_db.sqlite3
+datasets/
+.idea/
